@@ -1,15 +1,9 @@
 -- Create a user-defined function to safely divide two integers.
-DROP FUNCTION IF EXISTS SafeDiv;
-DELIMITER $$
-CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS FLOAT DETERMINISTIC
-BEGIN
-    IF (b = 0)
-    THEN
-        RETURN (0);
-    ELSE
-        RETURN (a / b);
-    END IF;
-END
-$$ 
-DELIMITER ;
+DROP VIEW IF EXISTS need_meeting;
+CREATE VIEW need_meeting AS 
+SELECT name FROM students 
+WHERE 
+    score < 80 AND 
+    (last_meeting IS NULL 
+        OR 
+    last_meeting < ADDDATE(CURDATE(), interval -1 MONTH));
